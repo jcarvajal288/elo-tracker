@@ -18,4 +18,14 @@ class EloCalculator(k_value: Int) {
     val s1 = if(isWin) { 1 } else { 0 }
     math.round(k * (s1 - e1))
   }
+
+  /*
+   * algorithm from https://en.wikipedia.org/wiki/Elo_rating_system
+   */
+  def freshRating(wins: List[Double], losses: List[Double]): Int = {
+    val totalOfOpponentsRatings = (wins ++ losses).sum
+    val totalGames = wins.size + losses.size
+    ((totalOfOpponentsRatings + 400 * (wins.size - losses.size)) / totalGames).toInt
+  }
+
 }
