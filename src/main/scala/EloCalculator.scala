@@ -6,12 +6,12 @@ class EloCalculator(k_value: Int) {
 
   def calculateNewRating(player: Player): Double = {
     val eloAfterWins = player.wins
-      .foldLeft(player.initialRating) { (ratingSoFar, scoreOfOpponent) =>
-        ratingSoFar + calculateSingleRoundChange(player.initialRating, scoreOfOpponent, isWin = true)
+      .foldLeft(player.initialRating) { (ratingSoFar, ratingOfOpponent) =>
+        ratingSoFar + calculateSingleRoundChange(player.initialRating, ratingOfOpponent, isWin = true)
       }
     player.losses
-      .foldLeft(eloAfterWins) { (ratingSoFar, scoreOfOpponent) =>
-        ratingSoFar + calculateSingleRoundChange(player.initialRating, scoreOfOpponent, isWin = false)
+      .foldLeft(eloAfterWins) { (ratingSoFar, ratingOfOpponent) =>
+        ratingSoFar + calculateSingleRoundChange(player.initialRating, ratingOfOpponent, isWin = false)
       }
   }
 
