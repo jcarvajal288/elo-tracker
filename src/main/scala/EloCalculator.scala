@@ -4,8 +4,15 @@ class EloCalculator(k_value: Int) {
 
   private val k = k_value
 
-  def calculateRating(ourRating: Double, wins: List[Double], losses: List[Double]): Double = {
-    0.0
+  def calculateNewRating(player: Player): Double = {
+    val eloAfterWins = player.wins
+      .foldLeft(player.initialRating) { (ratingSoFar, scoreOfOpponent) =>
+        ratingSoFar + calculateSingleRoundChange(player.initialRating, scoreOfOpponent, isWin = true)
+      }
+    player.losses
+      .foldLeft(eloAfterWins) { (ratingSoFar, scoreOfOpponent) =>
+        ratingSoFar + calculateSingleRoundChange(player.initialRating, scoreOfOpponent, isWin = false)
+      }
   }
 
   /*

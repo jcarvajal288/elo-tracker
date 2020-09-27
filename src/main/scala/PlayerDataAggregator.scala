@@ -6,7 +6,6 @@ class PlayerDataAggregator(currentStandings: BufferedSource,
                           ) {
 
   private val standings: Map[String, Double] = readCurrentStandings(currentStandings)
-
   private val matches: List[Match] = readMatches(tournamentResults)
 
   private def readCurrentStandings(standings: BufferedSource): Map[String, Double] = {
