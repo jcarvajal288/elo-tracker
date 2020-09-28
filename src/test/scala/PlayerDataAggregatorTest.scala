@@ -7,11 +7,12 @@ class PlayerDataAggregatorTest extends AnyFlatSpec {
   private val currentStandings = Source.fromResource("currentStandings.csv")
   private val tournamentResults = Source.fromResource("tournamentResults.csv")
   private val eloCalculator = new EloCalculator(32)
-  private val aggregator = new PlayerDataAggregator(currentStandings, tournamentResults, eloCalculator)
+  private val aggregator = new PlayerDataAggregator(currentStandings, tournamentResults)
   private val salientBlue = aggregator.getPlayer("SalientBlue")
 
   private val smallStandings = Source.fromResource("smallStandings.csv")
   private val smallResults = Source.fromResource("smallTourney.csv")
+  val smallAggregator = new PlayerDataAggregator(smallStandings, smallResults)
 
   it should "aggregate a player's basic data" in {
     assert(salientBlue.name == "SalientBlue")
@@ -34,8 +35,18 @@ class PlayerDataAggregatorTest extends AnyFlatSpec {
   }
 
   it should "read in all players in the tourney" in {
-    val aggr = new PlayerDataAggregator(smallStandings, smallResults, eloCalculator)
-    val players = aggr.getPlayers
+    val players = smallAggregator.getPlayers
     assert(4 == players.size)
+  }
+
+  it should "calculate the new ratings for all players in the tourney" in {
+    val babiuszek = smallAggregator.getPlayer("Babiuszek")
+    val shinySylvee = smallAggregator.getPlayer("ShinySylvee")
+    val stormwolf = smallAggregator.getPlayer("Stormwolf")
+    val lewdBuns = smallAggregator.getPlayer("LewdBuns")
+    assert(eloCalculator.calculateNewRating(babiuszek) == 1217)
+    assert(eloCalculator.calculateNewRating(shinySylvee) == 1032)
+    assert(eloCalculator.calculateNewRating(stormwolf) == 968)
+    assert(eloCalculator.calculateNewRating(lewdBuns) == 983)
   }
 }

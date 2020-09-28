@@ -1,8 +1,7 @@
 import scala.io.BufferedSource
 
 class PlayerDataAggregator(currentStandings: BufferedSource,
-                           tournamentResults: BufferedSource,
-                           private val eloCalculator: EloCalculator
+                           tournamentResults: BufferedSource
                           ) {
 
   private val standings: Map[String, Double] = readCurrentStandings(currentStandings)
