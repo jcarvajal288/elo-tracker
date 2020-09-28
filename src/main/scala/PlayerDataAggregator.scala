@@ -65,4 +65,11 @@ class PlayerDataAggregator(currentStandings: BufferedSource,
       throw new RuntimeException(s"player '$playerName' not found in standings list!")
     }
   }
+
+  def getPlayers: Set[Player] = {
+    standings.keySet
+      .map(playerName => {
+        getPlayer(playerName)
+      })
+  }
 }

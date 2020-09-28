@@ -10,6 +10,9 @@ class PlayerDataAggregatorTest extends AnyFlatSpec {
   private val aggregator = new PlayerDataAggregator(currentStandings, tournamentResults, eloCalculator)
   private val salientBlue = aggregator.getPlayer("SalientBlue")
 
+  private val smallStandings = Source.fromResource("smallStandings.csv")
+  private val smallResults = Source.fromResource("smallTourney.csv")
+
   it should "aggregate a player's basic data" in {
     assert(salientBlue.name == "SalientBlue")
     assert(salientBlue.initialRating == 102)
@@ -28,5 +31,11 @@ class PlayerDataAggregatorTest extends AnyFlatSpec {
     assert(salientBlue.losses.count(_ == 1048) == 1)
     assert(salientBlue.losses.count(_ == 2925) == 2)
     assert(salientBlue.losses.count(_ == 237) == 2)
+  }
+
+  it should "read in all players in the tourney" in {
+    val aggr = new PlayerDataAggregator(smallStandings, smallResults, eloCalculator)
+    val players = aggr.getPlayers
+    assert(4 == players.size)
   }
 }
